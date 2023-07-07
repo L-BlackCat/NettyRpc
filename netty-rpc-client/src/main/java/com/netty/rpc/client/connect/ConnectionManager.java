@@ -128,6 +128,7 @@ public class ConnectionManager {
                 channelFuture.addListener(new ChannelFutureListener() {
                     @Override
                     public void operationComplete(final ChannelFuture channelFuture) throws Exception {
+                        //  消息发送成功后
                         if (channelFuture.isSuccess()) {
                             logger.info("Successfully connect to remote server, remote peer = " + remotePeer);
                             RpcClientHandler handler = channelFuture.channel().pipeline().get(RpcClientHandler.class);
@@ -164,6 +165,8 @@ public class ConnectionManager {
 
     public RpcClientHandler chooseHandler(String serviceKey) throws Exception {
         int size = connectedServerNodes.values().size();
+        //  阻塞，等待 前面创建的线程 根据服务信息获取到的地址 连接到指定服务器后 拿取到的处理handler
+        //  疑惑：如果是服务分布在多个服务器上面，这里获取到一个服务器中的服务就会返回，可能导致下面找不到对应的服务数据
         while (isRunning && size <= 0) {
             try {
                 waitingForHandler();

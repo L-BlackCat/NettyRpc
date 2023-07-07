@@ -93,7 +93,7 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
 //        method.setAccessible(true);
 //        return method.invoke(serviceBean, parameters);
 
-        // Cglib reflect
+        // Cglib reflect      LFH  为了避免使用反射带来的性能问题，使用CGLIB提供的反射API
         FastClass serviceFastClass = FastClass.create(serviceClass);
 //        FastMethod serviceFastMethod = serviceFastClass.getMethod(methodName, parameterTypes);
 //        return serviceFastMethod.invoke(serviceBean, parameters);

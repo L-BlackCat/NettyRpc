@@ -77,6 +77,7 @@ public class RpcFuture implements Future<Object> {
 
     public void done(RpcResponse reponse) {
         this.response = reponse;
+        //  让get()停止等待，获得响应值
         sync.release(1);
         invokeCallbacks();
         // Threshold
@@ -132,6 +133,7 @@ public class RpcFuture implements Future<Object> {
         private final int done = 1;
         private final int pending = 0;
 
+        //  这里重写了获取锁，默认state = 0 ,是为了让get()一直处于等待状态
         @Override
         protected boolean tryAcquire(int arg) {
             return getState() == done;

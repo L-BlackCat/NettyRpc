@@ -9,7 +9,7 @@ import com.app.test.service.HelloService;
 public class RpcTest {
 
     public static void main(String[] args) throws InterruptedException {
-        final RpcClient rpcClient = new RpcClient("10.217.59.164:2181");
+        final RpcClient rpcClient = new RpcClient("127.0.0.1:2181");
 
         int threadNum = 1;
         final int requestNum = 50;
@@ -44,6 +44,7 @@ public class RpcTest {
             threads[i].start();
         }
         for (int i = 0; i < threads.length; i++) {
+            //  阻塞，等待子线程结束
             threads[i].join();
         }
         long timeCost = (System.currentTimeMillis() - startTime);

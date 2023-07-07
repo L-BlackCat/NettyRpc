@@ -29,18 +29,20 @@ public class RpcClientHandler extends SimpleChannelInboundHandler<RpcResponse> {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
         this.remotePeer = this.channel.remoteAddress();
+        logger.info("===========channel active, remotePeer:" + remotePeer);
     }
 
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
         super.channelRegistered(ctx);
         this.channel = ctx.channel();
+        logger.info("============channel register");
     }
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, RpcResponse response) throws Exception {
         String requestId = response.getRequestId();
-        logger.debug("Receive response: " + requestId);
+        logger.info("==========Receive response: " + requestId);
         RpcFuture rpcFuture = pendingRPC.get(requestId);
         if (rpcFuture != null) {
             pendingRPC.remove(requestId);
